@@ -9,7 +9,7 @@ export default function App() {
   console.log('API URL:', API);
 
   useEffect(() => {
-    fetchTodos();
+    fetchTodos().then(() => console.log('Todos fetched successfully')).catch
   }, []);
 
   async function fetchTodos() {
