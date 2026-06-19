@@ -58,31 +58,115 @@ export default function App() {
   }
 
   return (
-    <div className="app">
-      <h1>Todo App</h1>
+    <div
+      style={{
+        maxWidth: "500px",
+        margin: "40px auto",
+        padding: "20px",
+        border: "1px solid #ddd",
+        borderRadius: "10px",
+        fontFamily: "Arial, sans-serif",
+        backgroundColor: "#f7e7e7"
+      }}
+    >
+      <h1
+        style={{
+          textAlign: "center",
+          color: "#333",
+        }}
+      >
+        Todo App
+      </h1>
 
-      <form onSubmit={addTodo} className="add-form">
+      <form
+        onSubmit={addTodo}
+        style={{
+          display: "flex",
+          gap: "10px",
+          marginBottom: "20px",
+        }}
+      >
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="New todo"
+          style={{
+            flex: 1,
+            padding: "10px",
+            border: "1px solid #ccc",
+            borderRadius: "5px",
+          }}
         />
-        <button type="submit">Add</button>
+
+        <button
+          type="submit"
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#007bff",
+            color: "#fff",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}
+        >
+          Add
+        </button>
       </form>
 
-      <ul className="todo-list">
+      <ul
+        style={{
+          listStyle: "none",
+          padding: 0,
+        }}
+      >
         {todos.map((t) => (
-          <li key={t.id} className={t.completed ? 'done' : ''}>
-            <label>
+          <li
+            key={t.id}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: "10px",
+              marginBottom: "10px",
+              border: "1px solid #eee",
+              borderRadius: "5px",
+              backgroundColor: "#f9f9f9",
+            }}
+          >
+            <label
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+              }}
+            >
               <input
                 type="checkbox"
                 checked={t.completed}
                 onChange={() => toggle(t)}
               />
-              <span>{t.title}</span>
+
+              <span
+                style={{
+                  textDecoration: t.completed ? "line-through" : "none",
+                  color: t.completed ? "#888" : "#000",
+                }}
+              >
+                {t.title}
+              </span>
             </label>
 
-            <button onClick={() => remove(t.id)}>
+            <button
+              onClick={() => remove(t.id)}
+              style={{
+                backgroundColor: "#dc3545",
+                color: "#fff",
+                border: "none",
+                padding: "8px 12px",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+            >
               Delete
             </button>
           </li>
