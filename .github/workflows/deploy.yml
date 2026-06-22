@@ -1,0 +1,49 @@
+name: React Production CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Triggers the pipeline only on pushes/merges to the main branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Fetch code from your repository
+    - name: Checkout Source Code
+      uses: actions/checkout@v4
+
+    # 2. Set up Node.js environment
+    - name: Setup Node.js Environment
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+
+    # 3. Clean install dependencies and build production assets
+    - name: Install Dependencies & Build
+      run: |
+        npm ci
+        npm run build  # Creates the 'dist' (Vite) or 'build' (CRA) folder
+
+    # 4. Clear out stale static deployments from EC2
+    - name: Purge Web Root Directory on EC2
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          rm -rf /var/www/html/*
+
+    # 5. Securely copy build folder contents to Nginx root directory
+    - name: Transfer Build Assets to EC2 (SCP)
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        source: "dist/*" # Change to "build/*" if using older Create React App setup
+        target: "/var/www/html"
+        strip_components: 1
