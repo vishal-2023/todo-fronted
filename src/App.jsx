@@ -81,6 +81,15 @@ export default function App() {
           marginBottom: '20px',
         }}
       >
+        Todo App - Share with your friends and family
+      </h1>
+      <h1
+        style={{
+          textAlign: 'center',
+          color: '#333',
+          marginBottom: '20px',
+        }}
+      >
         Todo App
       </h1>
 
