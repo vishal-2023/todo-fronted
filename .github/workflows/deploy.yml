@@ -25,6 +25,7 @@ jobs:
     - name: Install Dependencies & Build
       run: |
         npm ci
+        echo "VITE_API_URL=${{ vars.VITE_API_URL }}" > .env
         npm run build  # Creates the 'dist' (Vite) or 'build' (CRA) folder
 
     # 4. Clear out stale static deployments from EC2
