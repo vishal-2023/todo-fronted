@@ -9,13 +9,17 @@ export default function App() {
   console.log('API URL:', API);
 
   useEffect(() => {
-    fetchTodos().then(() => console.log('Todos fetched successfully')).catch
+    fetchTodos();
   }, []);
 
   async function fetchTodos() {
-    const res = await fetch(`${API}/todos`);
-    const data = await res.json();
-    setTodos(data);
+    try {
+      const res = await fetch(`${API}/todos`);
+      const data = await res.json();
+      setTodos(data);
+    } catch (error) {
+      console.error('Error fetching todos:', error);
+    }
   }
 
   async function addTodo(e) {
@@ -60,19 +64,21 @@ export default function App() {
   return (
     <div
       style={{
-        maxWidth: "500px",
-        margin: "40px auto",
-        padding: "20px",
-        border: "1px solid #ddd",
-        borderRadius: "10px",
-        fontFamily: "Arial, sans-serif",
-        backgroundColor: "#f7e7e7"
+        maxWidth: '500px',
+        margin: '40px auto',
+        padding: '20px',
+        border: '1px solid #ddd',
+        borderRadius: '10px',
+        fontFamily: 'Arial, sans-serif',
+        backgroundColor: '#f7e7e7',
+        boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
       }}
     >
       <h1
         style={{
-          textAlign: "center",
-          color: "#333",
+          textAlign: 'center',
+          color: '#333',
+          marginBottom: '20px',
         }}
       >
         Todo App
@@ -81,9 +87,9 @@ export default function App() {
       <form
         onSubmit={addTodo}
         style={{
-          display: "flex",
-          gap: "10px",
-          marginBottom: "20px",
+          display: 'flex',
+          gap: '10px',
+          marginBottom: '20px',
         }}
       >
         <input
@@ -92,21 +98,22 @@ export default function App() {
           placeholder="New todo"
           style={{
             flex: 1,
-            padding: "10px",
-            border: "1px solid #ccc",
-            borderRadius: "5px",
+            padding: '10px',
+            border: '1px solid #ccc',
+            borderRadius: '5px',
+            outline: 'none',
           }}
         />
 
         <button
           type="submit"
           style={{
-            padding: "10px 20px",
-            backgroundColor: "#007bff",
-            color: "#fff",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
+            padding: '10px 20px',
+            backgroundColor: '#007bff',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
           }}
         >
           Add
@@ -115,29 +122,30 @@ export default function App() {
 
       <ul
         style={{
-          listStyle: "none",
+          listStyle: 'none',
           padding: 0,
+          margin: 0,
         }}
       >
         {todos.map((t) => (
           <li
             key={t.id}
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              padding: "10px",
-              marginBottom: "10px",
-              border: "1px solid #eee",
-              borderRadius: "5px",
-              backgroundColor: "#f9f9f9",
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '10px',
+              marginBottom: '10px',
+              border: '1px solid #eee',
+              borderRadius: '5px',
+              backgroundColor: '#fff',
             }}
           >
             <label
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
               }}
             >
               <input
@@ -148,8 +156,8 @@ export default function App() {
 
               <span
                 style={{
-                  textDecoration: t.completed ? "line-through" : "none",
-                  color: t.completed ? "#888" : "#000",
+                  textDecoration: t.completed ? 'line-through' : 'none',
+                  color: t.completed ? '#888' : '#000',
                 }}
               >
                 {t.title}
@@ -159,12 +167,12 @@ export default function App() {
             <button
               onClick={() => remove(t.id)}
               style={{
-                backgroundColor: "#dc3545",
-                color: "#fff",
-                border: "none",
-                padding: "8px 12px",
-                borderRadius: "5px",
-                cursor: "pointer",
+                backgroundColor: '#dc3545',
+                color: '#fff',
+                border: 'none',
+                padding: '8px 12px',
+                borderRadius: '5px',
+                cursor: 'pointer',
               }}
             >
               Delete
@@ -172,6 +180,25 @@ export default function App() {
           </li>
         ))}
       </ul>
+
+      {/* Footer */}
+      <footer
+        style={{
+          marginTop: '30px',
+          paddingTop: '15px',
+          borderTop: '1px solid #ddd',
+          textAlign: 'center',
+          color: '#666',
+          fontSize: '14px',
+        }}
+      >
+        <p style={{ margin: '5px 0' }}>
+          © {new Date().getFullYear()} Todo App
+        </p>
+        <p style={{ margin: '5px 0' }}>
+          Developed by Vishal Singh
+        </p>
+      </footer>
     </div>
   );
 }
